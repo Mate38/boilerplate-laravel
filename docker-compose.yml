@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+  app:
+    # env_file: .env
+    build:
+      context: .docker/app
+    ports:
+      - '80:80'
+    volumes:
+      - ./:/var/www/
+    networks:
+      - network
+  
+  database:
+    image: mysql:5.7.22
+    ports:
+      - "3306:3306"
+    volumes:
+      - .docker/dbdata:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - network
+  
+networks:
+  network:
+    driver: bridge
